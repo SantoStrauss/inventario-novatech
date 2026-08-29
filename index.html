@@ -2,12 +2,12 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Inventario NovaTech - Productos</title>
+  <title>Inventario NovaTech</title>
   <style>
     table { width: 100%; border-collapse: collapse; margin-top: 20px; }
     th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
     th { background-color: #f4f4f4; }
-    .form-container { margin-top: 30px; padding: 15px; border: 1px solid #ccc; max-width: 400px; }
+    .form-container { margin-top: 20px; padding: 15px; border: 1px solid #ccc; max-width: 400px; }
     .form-group { margin-bottom: 10px; }
     .form-group label { display: block; margin-bottom: 5px; }
     .form-group input { width: 100%; padding: 6px; box-sizing: border-box; }
@@ -16,8 +16,29 @@
 </head>
 <body>
 
-  <h1>Lista de Productos</h1>
+  <h1>Gestión de Productos</h1>
 
+  <!-- Formulario para Crear Producto -->
+  <div class="form-container">
+    <h3>Agregar Nuevo Producto</h3>
+    <form id="form-crear" onsubmit="crearProducto(event)">
+      <div class="form-group">
+        <label for="nuevo-nombre">Nombre:</label>
+        <input type="text" id="nuevo-nombre" required>
+      </div>
+      <div class="form-group">
+        <label for="nuevo-precio">Precio:</label>
+        <input type="number" id="nuevo-precio" step="0.01" min="0" required>
+      </div>
+      <div class="form-group">
+        <label for="nuevo-stock">Stock:</label>
+        <input type="number" id="nuevo-stock" min="0" required>
+      </div>
+      <button type="submit">Agregar Producto</button>
+    </form>
+  </div>
+
+  <!-- Tabla de Productos -->
   <table>
     <thead>
       <tr>
@@ -31,8 +52,8 @@
     <tbody id="tabla-productos"></tbody>
   </table>
 
-  <!-- Formulario para editar -->
-  <div id="contenedor-formulario" class="form-container oculto">
+  <!-- Formulario para Editar Producto -->
+  <div id="contenedor-formulario-editar" class="form-container oculto">
     <h3>Editar Producto</h3>
     <form id="form-editar" onsubmit="guardarCambios(event)">
       <input type="hidden" id="edit-id">
@@ -41,15 +62,13 @@
         <label for="edit-nombre">Nombre:</label>
         <input type="text" id="edit-nombre" required>
       </div>
-
       <div class="form-group">
         <label for="edit-precio">Precio:</label>
-        <input type="number" id="edit-precio" step="0.01" required>
+        <input type="number" id="edit-precio" step="0.01" min="0" required>
       </div>
-
       <div class="form-group">
         <label for="edit-stock">Stock:</label>
-        <input type="number" id="edit-stock" required>
+        <input type="number" id="edit-stock" min="0" required>
       </div>
 
       <button type="submit">Guardar Cambios</button>

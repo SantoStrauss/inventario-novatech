@@ -1,6 +1,4 @@
-function crearProducto(producto) {
-    productos.push(producto);
-}
+// Base de datos inicial en memoria
 let productos = [
   { id: 1, nombre: "Laptop NovaBook Pro", precio: 899.99, stock: 15 },
   { id: 2, nombre: "Mouse Inalámbrico", precio: 25.50, stock: 50 },
@@ -8,7 +6,12 @@ let productos = [
   { id: 4, nombre: "Monitor 27'' 4K", precio: 320.00, stock: 8 }
 ];
 
-// 1. Mostrar la lista con el botón Editar
+// Variable para generar IDs autoincrementables únicos
+let siguienteId = 5;
+
+// ==========================================
+// 1. LISTAR / LEER PRODUCTOS
+// ==========================================
 function mostrarProductos(lista) {
   const contenedor = document.getElementById("tabla-productos");
   contenedor.innerHTML = "";
@@ -23,6 +26,7 @@ function mostrarProductos(lista) {
       <td>${producto.stock}</td>
       <td>
         <button onclick="prepararEdicion(${producto.id})">Editar</button>
+        <button onclick="eliminarProducto(${producto.id})">Eliminar</button>
       </td>
     `;
 
@@ -30,7 +34,35 @@ function mostrarProductos(lista) {
   });
 }
 
-// 2. Cargar los datos del producto seleccionado en el formulario
+// ==========================================
+// 2. CREAR PRODUCTO
+// ==========================================
+function crearProducto(event) {
+  event.preventDefault();
+
+  const nombre = document.getElementById("nuevo-nombre").value;
+  const precio = parseFloat(document.getElementById("nuevo-precio").value);
+  const stock = parseInt(document.getElementById("nuevo-stock").value);
+
+  const nuevoProducto = {
+    id: siguienteId++,
+    nombre: nombre,
+    precio: precio,
+    stock: stock
+  };
+
+  productos.push(nuevoProducto);
+
+  // Limpiar el formulario de creación
+  document.getElementById("form-crear").reset();
+
+  // Actualizar la tabla
+  mostrarProductos(productos);
+}
+
+// ==========================================
+// 3. EDITAR PRODUCTO
+// ==========================================
 function prepararEdicion(id) {
   const producto = productos.find(p => p.id === id);
 
@@ -40,21 +72,18 @@ function prepararEdicion(id) {
     document.getElementById("edit-precio").value = producto.precio;
     document.getElementById("edit-stock").value = producto.stock;
 
-    // Mostrar el formulario
-    document.getElementById("contenedor-formulario").classList.remove("oculto");
+    document.getElementById("contenedor-formulario-editar").classList.remove("oculto");
   }
 }
 
-// 3. Guardar las modificaciones realizadas
 function guardarCambios(event) {
-  event.preventDefault(); // Prevenir el envío tradicional del formulario
+  event.preventDefault();
 
   const id = parseInt(document.getElementById("edit-id").value);
   const nuevoNombre = document.getElementById("edit-nombre").value;
   const nuevoPrecio = parseFloat(document.getElementById("edit-precio").value);
   const nuevoStock = parseInt(document.getElementById("edit-stock").value);
 
-  // Buscar el producto en el arreglo y actualizar sus valores
   productos = productos.map(producto => {
     if (producto.id === id) {
       return {
@@ -67,18 +96,32 @@ function guardarCambios(event) {
     return producto;
   });
 
-  // Re-renderizar la tabla actualizada
   mostrarProductos(productos);
-
-  // Ocultar formulario
   cancelarEdicion();
 }
 
-// 4. Ocultar el formulario de edición
 function cancelarEdicion() {
   document.getElementById("form-editar").reset();
-  document.getElementById("contenedor-formulario").classList.add("oculto");
+  document.getElementById("contenedor-formulario-editar").classList.add("oculto");
 }
 
-// Inicializar la tabla
+// ==========================================
+// 4. ELIMINAR PRODUCTO
+// ==========================================
+function eliminarProducto(id) {
+  const confirmar = confirm("¿Estás seguro de que deseas eliminar este producto?");
+  
+  if (confirmar) {
+    productos = productos.filter(producto => producto.id !== id);
+
+    const idEditando = parseInt(document.getElementById("edit-id")?.value);
+    if (idEditando === id) {
+      cancelarEdicion();
+    }
+
+    mostrarProductos(productos);
+  }
+}
+
+// Inicializar la tabla al cargar la página
 mostrarProductos(productos);
