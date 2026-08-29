@@ -7,13 +7,13 @@ No se debe desarrollar de forma directa sobre main porque es la versión final d
 ¿Qué diferencia existe entre main y develop? 
 Main es la versión final, develop son los cambios que se están haciendo en el momento del desarrollo y que cuando ya están terminados ahí si pasan al Main.
 
-¿Cuándo se utiliza una feature?
+¿Cuándo se utiliza una feature??
 Se usa cuando se quiere hacer una funcionalidad nueva del proyecto que no existe todavía, sin afectar el desarrollo hasta que esté terminado.
 
-¿Cuándo se utiliza release?
+¿Cuándo se utiliza release??
 Cuando ya tiene todas las funcionalidades para hacer una nueva versión y se quiere hacer los últimos ajustes para antes de ponerla en develop.
 
-¿Cuándo se utiliza hotfix?
+¿Cuándo se utiliza hotfix??
 Cuando hay un error que se tiene que corregir urgentemente en el main se crea el hotfix, se corrige el error y ya cuando esta listo se guarda el cambio en main y en develop.
 
 ¿Qué es un conflicto de Git y por qué ocurre?
